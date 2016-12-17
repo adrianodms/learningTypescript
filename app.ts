@@ -1,4 +1,7 @@
-function GetAllBooks() {
+import { Category } from './enums';
+import { Book , DamagedLogger} from './interfaces';
+
+function GetAllBooks(): Book[] {
     let books = [
         { id: 1, title: "Ulysses", author: "James Joyce", available: true, category: Category.Fiction },
         { id: 2, title: "A Farewell to Arms", author: "Ernest Hemingway", available: false, category: Category.Fiction },
@@ -7,6 +10,7 @@ function GetAllBooks() {
     ];
     return books;
 }
+
 function LogFirstAvailable(books = GetAllBooks()): void {
     let numberOfBooks: number = books.length;
     let firstAvailable: string = '';
@@ -19,8 +23,6 @@ function LogFirstAvailable(books = GetAllBooks()): void {
     console.log('Total Books: ' + numberOfBooks);
     console.log('firstAvailable: ' + firstAvailable);
 }
-
-enum Category { Biography, Poetry, Fiction, History, Children }
 
 function GetBookTitlesByCategory(categoryFilter: Category = Category.Fiction): Array<string> {
     console.log('Getting books in category: ' + Category[categoryFilter]);
@@ -44,7 +46,7 @@ function LogBookTitles(titles: string[]): void {
     }
 }
 
-function GetBookById(id: number) {
+function GetBookById(id: number): Book {
     const allBooks = GetAllBooks();
     return allBooks.filter((book) => book.id === id)[0];
 }
@@ -100,10 +102,32 @@ function GetTitles(bookProperty: any): string[] {
     return foundTitles;
 }
 
+function PrintBook(book: Book) {
+    console.log(book.title + ' by ' + book.author);
+}
+
 //**************************
 
-let checkedBooks = GetTitles(true);
-checkedBooks.forEach(title => console.log(title));
+let mybook: Book = {
+    id: 5,
+    title: 'Pride and Prejudice',
+    author: 'Jane Austen',
+    available: true,
+    category: Category.Fiction,
+    pages: 250,
+    markDamaged: (reason: string) => console.log('Damaged:' + reason)
+};
+
+// PrintBook(mybook);
+
+// mybook.markDamaged('missing cover')
+
+let logDamage: DamagedLogger;
+logDamage = (damage: string) => console.log('Damage report: '+ damage);
+logDamage('teste Adriano');
+
+// let checkedBooks = GetTitles(true);
+// checkedBooks.forEach(title => console.log(title));
 
 // let myBooks: string[] = CheckoutBooks('Adriano', 1, 3, 4);
 // myBooks.forEach(title => console.log(title));
